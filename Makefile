@@ -12,40 +12,27 @@ start: ## Start the project
 stop:
 	docker compose down --remove-orphans
 
-wp-run:
-	 docker compose run symfony_assets_builder yarn install
-	 $(CONSOLE) fos:js:dump --format=json --target=./public/js/fos_js_routes.json
-	 docker compose run symfony_assets_builder yarn dev
+tail-build:
+	$(CONSOLE) tailwind:build --watch
 
-wp-watch:
-	 docker compose run symfony_assets_builder yarn watch
+dev-transupdate:
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages en_devel
 
-yarn-lint:
-	 docker compose run symfony_assets_builder yarn lint
+trans-unused-keys:
+	$(CONSOLE) debug:translation en_devel --only-unused
 
-yarn-test-unit:
-	 docker compose run symfony_assets_builder yarn test:unit
+trans-missing-keys:
+	$(CONSOLE) debug:translation en_devel --only-missing
 
-yarn-audit:
-	docker compose run symfony_assets_builder yarn npm audit -A
-	docker compose run symfony_assets_builder yarn npm audit -R
-
-rebuild:
-	docker compose down --remove-orphans
-	aws ecr get-login-password --profile Devs-CTM --region eu-central-1 | docker login --username AWS --password-stdin 252252247358.dkr.ecr.eu-central-1.amazonaws.com
-	docker compose pull
-	docker pull 252252247358.dkr.ecr.eu-central-1.amazonaws.com/phpctm:latest
-	docker compose build --no-cache
-	docker compose up -d
+transupdate:
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages --prefix='' fr
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages --prefix='' en
 
 cc:
 	$(CONSOLE) cache:clear
 
 cw:
 	$(CONSOLE) cache:w
-
-cc-test:
-	$(CONSOLE) cache:clear --env=test --no-debug
 
 diff:
 	$(CONSOLE) doctrine:migrations:diff
@@ -77,9 +64,6 @@ reset-db:
 	$(CONSOLE) petafuel:poll:card:transaction -f 2020-01-01
 	docker compose exec db /SQL/import-in-dev.sh
 	$(CONSOLE) messenger:consume async card card_transaction clearing -vv --no-debug --time-limit=30
-
-erp-procedures:
-	docker compose exec db /SQL/import-in-dev.sh
 
 lint:
 	$(EXEC) composer validate
