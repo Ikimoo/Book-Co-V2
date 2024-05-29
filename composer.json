@@ -20,7 +20,6 @@
         "symfony/translation": "7.0.*",
         "symfony/twig-bundle": "7.0.*",
         "symfony/yaml": "7.0.*",
-        "symfonycasts/tailwind-bundle": "^0.5.1",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
@@ -74,5 +73,8 @@
             "require": "7.0.*",
             "docker": true
         }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^5.24"
     }
 }
