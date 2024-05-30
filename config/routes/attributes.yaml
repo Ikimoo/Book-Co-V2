@@ -1,0 +1,9 @@
+controllers:
+    resource:
+        path: ../../src/LandingPage/Controller/
+        namespace: App\LandingPage\Controller
+    type: attribute
+
+kernel:
+    resource: App\Kernel
+    type: attribute

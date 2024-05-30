@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-devel" target-language="en-devel" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="FNpdsjT" resname="base.books_co.title.page">
+        <source>base.books_co.title.page</source>
+        <target><![CDATA[Books&Co]]></target>
+      </trans-unit>
+      <trans-unit id="EZm9klL" resname="base.books_co.sign_up.link">
+        <source>base.books_co.sign_up.link</source>
+        <target>Sign up</target>
+      </trans-unit>
+      <trans-unit id="zcixKFz" resname="base.books_co.sign_in.button">
+        <source>base.books_co.sign_in.button</source>
+        <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="eAlE60l" resname="books_co.landing_page.title">
+        <source>books_co.landing_page.title</source>
+        <target><![CDATA[Books&Co]]></target>
+      </trans-unit>
+      <trans-unit id="sjoQ1IG" resname="books_co.landing_page.sub_message">
+        <source>books_co.landing_page.sub_message</source>
+        <target><![CDATA[Books&Co]]> allows you to lend or borrow books from individuals near you. Select your department to see the books available near you!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

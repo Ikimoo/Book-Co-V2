@@ -4,48 +4,41 @@ CONSOLE = $(EXEC) bin/console
 bash:
 	$(EXEC) sh
 
-start: ## Start the project
+build:
 	docker compose build --no-cache
+
+start: ## Start the project
 	docker compose up --pull always -d --wait
 	@echo "started on http://localhost"
 
 stop:
 	docker compose down --remove-orphans
 
-wp-run:
-	 docker compose run symfony_assets_builder yarn install
-	 $(CONSOLE) fos:js:dump --format=json --target=./public/js/fos_js_routes.json
-	 docker compose run symfony_assets_builder yarn dev
+update-importmap:
+	$(CONSOLE) importmap:outdated
+	$(CONSOLE) importmap:update
 
-wp-watch:
-	 docker compose run symfony_assets_builder yarn watch
+sass-build:
+	$(CONSOLE) sass:build --watch
 
-yarn-lint:
-	 docker compose run symfony_assets_builder yarn lint
+dev-transupdate:
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages en_devel
 
-yarn-test-unit:
-	 docker compose run symfony_assets_builder yarn test:unit
+trans-unused-keys:
+	$(CONSOLE) debug:translation en_devel --only-unused
 
-yarn-audit:
-	docker compose run symfony_assets_builder yarn npm audit -A
-	docker compose run symfony_assets_builder yarn npm audit -R
+trans-missing-keys:
+	$(CONSOLE) debug:translation en_devel --only-missing
 
-rebuild:
-	docker compose down --remove-orphans
-	aws ecr get-login-password --profile Devs-CTM --region eu-central-1 | docker login --username AWS --password-stdin 252252247358.dkr.ecr.eu-central-1.amazonaws.com
-	docker compose pull
-	docker pull 252252247358.dkr.ecr.eu-central-1.amazonaws.com/phpctm:latest
-	docker compose build --no-cache
-	docker compose up -d
+transupdate:
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages --prefix='' fr
+	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages --prefix='' en
 
 cc:
 	$(CONSOLE) cache:clear
 
 cw:
 	$(CONSOLE) cache:w
-
-cc-test:
-	$(CONSOLE) cache:clear --env=test --no-debug
 
 diff:
 	$(CONSOLE) doctrine:migrations:diff
@@ -77,9 +70,6 @@ reset-db:
 	$(CONSOLE) petafuel:poll:card:transaction -f 2020-01-01
 	docker compose exec db /SQL/import-in-dev.sh
 	$(CONSOLE) messenger:consume async card card_transaction clearing -vv --no-debug --time-limit=30
-
-erp-procedures:
-	docker compose exec db /SQL/import-in-dev.sh
 
 lint:
 	$(EXEC) composer validate

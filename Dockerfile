@@ -88,4 +88,5 @@ RUN set -eux; \
 	composer dump-autoload --classmap-authoritative --no-dev; \
 	composer dump-env prod; \
 	composer run-script --no-dev post-install-cmd; \
+	composer require --dev vimeo/psalm \
 	chmod +x bin/console; sync;
