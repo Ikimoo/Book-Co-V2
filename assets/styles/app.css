@@ -5,3 +5,7 @@ body {
 .text-test-color {
     color : green;
 }
+
+.bg-primary {
+    background-color: #ff6347 !important;
+}
