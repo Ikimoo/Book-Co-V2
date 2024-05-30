@@ -4,16 +4,22 @@ CONSOLE = $(EXEC) bin/console
 bash:
 	$(EXEC) sh
 
-start: ## Start the project
+build:
 	docker compose build --no-cache
+
+start: ## Start the project
 	docker compose up --pull always -d --wait
 	@echo "started on http://localhost"
 
 stop:
 	docker compose down --remove-orphans
 
-tail-build:
-	$(CONSOLE) tailwind:build --watch
+update-importmap:
+	$(CONSOLE) importmap:outdated
+	$(CONSOLE) importmap:update
+
+sass-build:
+	$(CONSOLE) sass:build --watch
 
 dev-transupdate:
 	$(CONSOLE) translation:extract --force --format=xlf12 --domain=messages en_devel
